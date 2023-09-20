@@ -5,6 +5,8 @@ import zipfile
 from os import PathLike
 from pathlib import Path
 
+import patoolib
+
 
 def get_workers(workers: int):
     assert workers >= 0
@@ -58,8 +60,7 @@ def zip(src: PathLike, dst: PathLike):
 def rar(src: PathLike, dst: PathLike):
     mkdirs(dst)
 
-    cmd = f"7z x -aoa -o{dst} {src}"
-    subprocess.run(cmd, shell=True, check=True)
+    patoolib.extract_archive(src, outdir=dst)
 
     return list(Path(dst).glob("**/*"))
 
