@@ -47,3 +47,15 @@ target-version = "py38"
 [tool.ruff.isort]
 lines-after-imports = 2
 known-first-party = ["t2m"]
+
+[tool.bumpver]
+current_version = "0.0.0"
+version_pattern = "MAJOR.MINOR.PATCH[-TAGNUM]"
+commit_message = "Bump version {old_version} -> {new_version}"
+commit = true
+tag = true
+push = false
+
+[tool.bumpver.file_patterns]
+"setup.py" = ['version="{version}"']
+"src/t2m/__init__.py" = ['__version__ = "{version}"']
