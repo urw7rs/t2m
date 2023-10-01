@@ -39,6 +39,7 @@ setup(
         "h5py",
         "mapbox_earcut",
         "pygifsicle",
+        "dask",
     ],
     extras_require={
         "test": ["pytest", "pytest-xdist"],
