@@ -8,7 +8,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="t2m",
-    version="0.0.0",
+    version="0.0.1",
     description="Text To Motion",
     long_description=long_description,
     long_description_content_type="text/markdown",
