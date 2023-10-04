@@ -194,3 +194,30 @@ class HumanML3D(Dataset):
 
         np.save(Path(dst) / "Mean.npy", mean)
         np.save(Path(dst) / "Std.npy", std)
+
+        path = io.download.url(
+            url="https://raw.githubusercontent.com/EricGuo5513/HumanML3D/ab5b332c3148ec669da4c55ad119e0d73861b867/HumanML3D/texts.zip",
+            path=dst,
+        )
+        io.extract.zip(path, dst)
+
+        io.download.url(
+            "https://raw.githubusercontent.com/EricGuo5513/HumanML3D/ab5b332c3148ec669da4c55ad119e0d73861b867/HumanML3D/train.txt",
+            dst,
+        )
+        io.download.url(
+            "https://raw.githubusercontent.com/EricGuo5513/HumanML3D/ab5b332c3148ec669da4c55ad119e0d73861b867/HumanML3D/val.txt",
+            dst,
+        )
+        io.download.url(
+            "https://raw.githubusercontent.com/EricGuo5513/HumanML3D/ab5b332c3148ec669da4c55ad119e0d73861b867/HumanML3D/train_val.txt",
+            dst,
+        )
+        io.download.url(
+            "https://raw.githubusercontent.com/EricGuo5513/HumanML3D/ab5b332c3148ec669da4c55ad119e0d73861b867/HumanML3D/test.txt",
+            dst,
+        )
+        io.download.url(
+            "https://raw.githubusercontent.com/EricGuo5513/HumanML3D/ab5b332c3148ec669da4c55ad119e0d73861b867/HumanML3D/all.txt",
+            dst,
+        )
