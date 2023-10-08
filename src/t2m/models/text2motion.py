@@ -210,10 +210,6 @@ class Text2Motion(nn.Module):
         self.text_encoder.load_state_dict(ckpt["text_encoder"])
         self.motion_encoder.load_state_dict(ckpt["motion_encoder"])
 
-        self.text_encoder.eval()
-        self.motion_encoder.eval()
-        self.movement_encoder.eval()
-
         self.unit_length = unit_length
 
     def normalize(self, motion):
