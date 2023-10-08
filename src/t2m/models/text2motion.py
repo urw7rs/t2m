@@ -172,7 +172,9 @@ def build_models(opt):
 
 
 class Text2Motion(nn.Module):
-    """Pretrained T2M model
+    """Text to motion
+
+    Implementation for "Generating Diverse and Natural 3D Human Motions from Texts." https://arxiv.org/abs/2204.14109
 
     Arguments:
         path (Path): path to extracted checkpoint file
@@ -236,22 +238,30 @@ class Text2Motion(nn.Module):
         return text_embedding
 
     @classmethod
-    def from_pretrained(cls, name:str, path: Optional[PathLike] = None, unit_length: int = 4):
-        if name == "HumanML3D":
+    def from_pretrained(cls, name:str, cache_path: Optional[PathLike] = None, unit_length: int = 4):
+        """Load pretrained text-to-motion model
+
+        Arguments:
+            name (str): name of the model one of t2m or kit
+            cache_path (PathLike): path to cache downloads
+            unit_length (int): unit length, defaults to 4
+        """
+
+        if name == "t2m":
             url = "https://drive.google.com/uc?id=1o7RTDQcToJjTm9_mNWTyzvZvjTWpZfug"
             md5 = "acee26596c49600983e5fc738028cc5a"
             file = "t2m.zip"
-        elif name == "KIT-ML":
+        elif name == "kit":
             url = "https://drive.google.com/uc?id=1KNU8CsMAnxFrwopKBBkC8jEULGLPBHQp"
             md5 = "bd172c9529ebbdb9074029f15a5430ec"
             file = "kit.zip"
         else:
             raise NotImplementedError()
 
-        if path is None:
-            path = Path.cwd()
+        if cache_path is None:
+            cache_path = Path.cwd()
 
-        output = Path(path).expanduser() / file
+        output = Path(cache_path).expanduser() / file
         gdown.cached_download(url, str(output), md5=md5, postprocess=gdown.extractall)
 
         return cls(path=output.with_suffix(""), unit_length=unit_length)

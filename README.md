@@ -57,9 +57,9 @@ class EvaluatorMDMWrapper(nn.Module):
         super().__init__()
 
         if "humanml" in dataset_name or "t2m" in dataset_name:
-            name = "HumanML3D"
+            name = "t2m"
         elif "kit" in dataset_name:
-            name = "KIT-ML"
+            name = "kit"
         else:
             raise NotImplementedError()
 
