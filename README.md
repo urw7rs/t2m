@@ -44,3 +44,58 @@ from t2m.datasets import KITML
 # downloads kit-ml dataset to dst
 KITML.download(dst="KIT-ML")
 ```
+
+
+## evaluation
+
+```python
+from t2m.models import Text2Motion
+
+
+class EvaluatorMDMWrapper(nn.Module):
+    def __init__(self, dataset_name):
+        super().__init__()
+
+        if "humanml" in dataset_name or "t2m" in dataset_name:
+            name = "t2m"
+        elif "kit" in dataset_name:
+            name = "kit"
+        else:
+            raise NotImplementedError()
+
+        self.t2m = Text2Motion.from_pretrained(name)
+
+    # Please note that the results does not following the order of inputs
+    def get_co_embeddings(self, word_embs, pos_ohot, cap_lens, motions, m_lens):
+        with torch.no_grad():
+            word_embs = word_embs.detach().float()
+            pos_ohot = pos_ohot.detach().float()
+            motions = motions.detach().float()
+
+            align_idx = np.argsort(m_lens.data.tolist())[::-1].copy()
+            motions = motions[align_idx]
+            m_lens = m_lens[align_idx]
+
+            """Movement Encoding"""
+            movements = self.t2m.forward_movement(motions)
+            motion_embedding = self.t2m.forward_motion(movements, m_lens)
+
+            """Text Encoding"""
+            text_embedding = self.t2m.forward_text(word_embs.float(), pos_ohot.float(), cap_lens.float())
+            text_embedding = text_embedding[align_idx]
+        return text_embedding, motion_embedding
+
+    # Please note that the results does not following the order of inputs
+    def get_motion_embeddings(self, motions, m_lens):
+        with torch.no_grad():
+            motions = motions.detach().float()
+
+            align_idx = np.argsort(m_lens.data.tolist())[::-1].copy()
+            motions = motions[align_idx]
+            m_lens = m_lens[align_idx]
+
+            """Movement Encoding"""
+            movements = self.t2m.forward_movement(motions)
+            motion_embedding = self.t2m.forward_motion(movements, m_lens)
+        return motion_embedding
+```
